@@ -1,0 +1,54 @@
+# Version Control
+.git
+.gitignore
+.github
+
+# Dependencies
+node_modules/
+.npm
+.yarn/cache
+
+# Build & Dist
+dist/
+build/
+.next/
+
+# Testing
+__tests__/
+*.test.ts
+*.test.tsx
+*.test.js
+jest.config.js
+jest.setup.js
+coverage/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# IDE & Tools
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+.claude/
+.aiox-core/
+
+# Documentation
+docs/
+README.md
+CLAUDE.md
+
+# CI/CD
+.github/workflows/
+
+# Socket.io Legacy (no longer used)
+server.ts
+test-client.ts
+api/
+
+# Temporary
+*.log
+.cache/
