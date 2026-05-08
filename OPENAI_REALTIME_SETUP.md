@@ -58,14 +58,27 @@ http://localhost:3000
 No painel da Vercel:
 
 1. Abra o projeto.
-2. Entre em `Settings`.
-3. Entre em `Environment Variables`.
-4. Adicione:
+2. Entre em `Settings` > `General`.
+3. Em `Root Directory`, deixe a raiz do repositorio. Nao selecione `web`, porque o `vercel.json` da raiz ja entra na pasta `web` nos comandos.
+4. Entre em `Settings` > `Environment Variables`.
+5. Adicione:
 
 ```text
 OPENAI_API_KEY = sua_chave_openai
 OPENAI_REALTIME_MODEL = gpt-realtime-translate
 ```
 
-5. Salve para os ambientes `Production`, `Preview` e `Development`, se quiser usar em todos.
-6. Faca um novo deploy.
+6. Salve para os ambientes `Production`, `Preview` e `Development`, se quiser usar em todos.
+7. Faca um novo deploy.
+
+## Configuracao esperada do build na Vercel
+
+O arquivo `vercel.json` da raiz usa:
+
+```text
+Install Command: cd web && npm install
+Build Command: cd web && npm run build
+Output Directory: web/.next
+```
+
+Nao e mais necessario configurar Firebase, Gemini, Twilio ou uma pasta `functions` para este MVP.
