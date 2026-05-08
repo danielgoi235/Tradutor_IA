@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Room Management (Story 1.1+)
+    match /rooms/{roomId} {
+      // Create: Anyone can create (anonymous access for MVP)
+      allow create: if
+        request.resource.data.keys().hasAll(['hostUsername', 'hostLanguage', 'createdAt', 'status']) &&
+        request.resource.data.status == 'waiting' &&
+        request.resource.data.hostUsername is string &&
+        request.resource.data.hostUsername.size() > 0 &&
+        request.resource.data.hostUsername.size() <= 50;
+
+      // Read: Anyone can read (needed for finding rooms)
+      allow read: if true;
+
+      // Update: Only when adding guest/offer/answer (validate structure)
+      allow update: if
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guestUsername', 'guestLanguage', 'offer', 'answer', 'status'])) &&
+        request.resource.data.status in ['waiting', 'active', 'closed'];
+
+      // Delete: Never allow direct deletion (use Cloud Function)
+      allow delete: if false;
+
+      // ICE Candidates (nested collection)
+      match /iceCandidates/{candidateId} {
+        // Anyone can add candidates
+        allow create: if
+          request.resource.data.keys().hasAll(['candidate', 'createdAt']) &&
+          request.resource.data.candidate is string &&
+          request.resource.data.candidate.size() > 0;
+
+        // Anyone can read candidates
+        allow read: if true;
+
+        // Prevent modifications
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+
+    // Default: Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
